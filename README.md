@@ -8,7 +8,7 @@
 |----------------------|---------------------|-------------------------------------|
 | Iqbal Hidayat R.     | 22/506066/TK/55425  | Backend Developer                  |
 | Steven Namora R.     | 22/505930/TK/55405  | Frontend Developer                 |
-| Della Febi A.        | 22/XXXXXX/TK/XXXXX  | QA Engineer                        |
+| Della Febi A.        | 22/505892/TK/55393  | QA Engineer                        |
 
 ## 🚀 Fitur Utama
 
