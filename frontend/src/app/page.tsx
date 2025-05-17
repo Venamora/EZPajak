@@ -15,6 +15,7 @@ type TaxFormData = {
 export default function TaxSubmissionForm() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState<TaxFormData>({
     nama: "",
     nik: "",
@@ -39,30 +40,124 @@ export default function TaxSubmissionForm() {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
-    if (name === "jumlahPajak") {
-      setError("");
+    validateField(name, value);
+  };
+
+  const validateField = (name: string, value: string) => {
+    let errors = { ...formErrors };
+    
+    switch (name) {
+      case "nik":
+        if (value && (!/^\d+$/.test(value) || value.length !== 16)) {
+          errors[name] = "NIK harus terdiri dari 16 angka";
+        } else {
+          delete errors[name];
+        }
+        break;
+      
+      case "email":
+        if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          errors[name] = "Format email tidak valid";
+        } else {
+          delete errors[name];
+        }
+        break;
+      
+      case "telepon":
+        if (value && (!/^\d+$/.test(value) || value.length < 10 || value.length > 14)) {
+          errors[name] = "Nomor telepon harus terdiri dari 10-14 angka";
+        } else {
+          delete errors[name];
+        }
+        break;
+      
+      case "jumlahPajak":
+        const jumlahPajakValue = parseFloat(value);
+        if (value && (isNaN(jumlahPajakValue) || jumlahPajakValue < 5000)) {
+          errors[name] = "Jumlah pajak minimal Rp 5.000";
+        } else {
+          delete errors[name];
+        }
+        break;
+      
+      default:
+        break;
     }
+    
+    setFormErrors(errors);
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    let newErrors: Record<string, string> = {};
+    let generalError = "";
+    
+    if (!formData.nama) {
+      newErrors.nama = "Nama tidak boleh kosong";
+      isValid = false;
+    }
+    
+    if (!formData.nik) {
+      newErrors.nik = "NIK tidak boleh kosong";
+      isValid = false;
+    } else if (!/^\d+$/.test(formData.nik) || formData.nik.length !== 16) {
+      newErrors.nik = "NIK harus terdiri dari 16 angka";
+      isValid = false;
+    }
+    
+    if (!formData.alamat) {
+      newErrors.alamat = "Alamat tidak boleh kosong";
+      isValid = false;
+    }
+    
+    if (!formData.email) {
+      newErrors.email = "Email tidak boleh kosong";
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Format email tidak valid";
+      isValid = false;
+    }
+    
+    if (formData.telepon && (!/^\d+$/.test(formData.telepon) || formData.telepon.length < 10 || formData.telepon.length > 14)) {
+      newErrors.telepon = "Nomor telepon harus terdiri dari 10-14 angka";
+      isValid = false;
+    }
+    
+    if (!formData.jenisPajak) {
+      newErrors.jenisPajak = "Jenis pajak harus dipilih";
+      isValid = false;
+    }
+    
+    const jumlahPajakValue = parseFloat(formData.jumlahPajak);
+    if (!formData.jumlahPajak) {
+      newErrors.jumlahPajak = "Jumlah pajak tidak boleh kosong";
+      isValid = false;
+    } else if (isNaN(jumlahPajakValue)) {
+      newErrors.jumlahPajak = "Jumlah pajak harus berupa angka";
+      isValid = false;
+    } else if (jumlahPajakValue < 5000) {
+      newErrors.jumlahPajak = "Jumlah pajak minimal Rp 5.000";
+      isValid = false;
+    }
+    
+    setFormErrors(newErrors);
+    
+    if (Object.keys(newErrors).length > 0) {
+      generalError = "Mohon perbaiki error pada formulir";
+    }
+    
+    setError(generalError);
+    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!validateForm()) {
+      return;
+    }
+    
     const jumlahPajakValue = parseFloat(formData.jumlahPajak);
-    if (isNaN(jumlahPajakValue) || jumlahPajakValue <= 0) {
-      setError("Jumlah pajak harus berupa angka positif");
-      return;
-    }
-
-    if (!formData.jenisPajak) {
-      setError("Silakan pilih jenis pajak");
-      return;
-    }
-
-    if (!formData.nama || !formData.nik || !formData.alamat || !formData.email) {
-      setError("Semua kolom bertanda (*) wajib diisi");
-      return;
-    }
-
     const currentDate = new Date();
     const refNumber = `TAX${currentDate.getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
     
@@ -91,7 +186,7 @@ export default function TaxSubmissionForm() {
             <p className="text-black mt-1">Lengkapi formulir di bawah ini untuk mengajukan pembayaran pajak</p>
           </div>
           
-          <div onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <h2 className="text-lg font-semibold text-black mb-3">Data Wajib Pajak</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -104,8 +199,11 @@ export default function TaxSubmissionForm() {
                     name="nama"
                     value={formData.nama}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 text-black border ${formErrors.nama ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
+                  {formErrors.nama && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.nama}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -117,8 +215,12 @@ export default function TaxSubmissionForm() {
                     name="nik"
                     value={formData.nik}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 border text-black ${formErrors.nik ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    maxLength={16}
                   />
+                  {formErrors.nik && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.nik}</p>
+                  )}
                 </div>
                 
                 <div className="md:col-span-2">
@@ -130,8 +232,11 @@ export default function TaxSubmissionForm() {
                     value={formData.alamat}
                     onChange={handleChange}
                     rows={2}
-                    className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 text-black border ${formErrors.alamat ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
+                  {formErrors.alamat && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.alamat}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -143,8 +248,11 @@ export default function TaxSubmissionForm() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 border text-black ${formErrors.email ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
+                  {formErrors.email && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -156,13 +264,16 @@ export default function TaxSubmissionForm() {
                     name="telepon"
                     value={formData.telepon}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 text-black border ${formErrors.telepon ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    maxLength={14}
                   />
+                  {formErrors.telepon && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.telepon}</p>
+                  )}
                 </div>
               </div>
             </div>
             
-            {/* Informasi Pajak */}
             <div>
               <h2 className="text-lg font-semibold text-black mb-3">Informasi Pembayaran Pajak</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -174,12 +285,15 @@ export default function TaxSubmissionForm() {
                     name="jenisPajak"
                     value={formData.jenisPajak}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full px-3 py-2 text-black border ${formErrors.jenisPajak ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   >
                     {jenisPajakOptions.map(option => (
                       <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                   </select>
+                  {formErrors.jenisPajak && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.jenisPajak}</p>
+                  )}
                 </div>
                 
                 <div>
@@ -191,21 +305,22 @@ export default function TaxSubmissionForm() {
                     name="jumlahPajak"
                     value={formData.jumlahPajak}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Contoh: 1000000"
+                    className={`w-full px-3 py-2 text-black border ${formErrors.jumlahPajak ? 'border-red-500' : 'border-gray-300'} rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    placeholder="Minimal Rp 5.000"
                   />
+                  {formErrors.jumlahPajak && (
+                    <p className="mt-1 text-sm text-red-600">{formErrors.jumlahPajak}</p>
+                  )}
                 </div>
               </div>
             </div>
             
-            {/* Error message */}
             {error && (
               <div className="bg-red-50 text-red-700 p-3 rounded-md border border-red-200">
                 {error}
               </div>
             )}
             
-            {/* Form actions */}
             <div className="flex justify-end space-x-3 pt-4 border-t">
               <button
                 type="button"
@@ -220,20 +335,20 @@ export default function TaxSubmissionForm() {
                     jumlahPajak: "",
                   });
                   setError("");
+                  setFormErrors({});
                 }}
                 className="px-4 py-2 text-black bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Reset
               </button>
               <button
-                type="button"
-                onClick={handleSubmit}
+                type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 Ajukan Pembayaran
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
