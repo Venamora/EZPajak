@@ -16,32 +16,52 @@ type TaxSubmission = {
   status: string;
 };
 
+
 export default function BuktiPengajuan() {
   const router = useRouter();
   const [submission, setSubmission] = useState<TaxSubmission | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const refNumber = localStorage.getItem('currentSubmission');
-    
-    if (!refNumber) {
-      setError("Bukti pengajuan tidak ditemukan");
-      setLoading(false);
-      return;
-    }
-    
-    const submissions = JSON.parse(localStorage.getItem('taxSubmissions') || '[]');
-    const currentSubmission = submissions.find((s: TaxSubmission) => s.referensi === refNumber);
-    
-    if (!currentSubmission) {
-      setError("Bukti pengajuan tidak ditemukan");
-      setLoading(false);
-      return;
-    }
-    
-    setSubmission(currentSubmission);
-    setLoading(false);
+    useEffect(() => {
+    const fetchSubmissionData = async () => {
+      try {
+        const refNumber = localStorage.getItem('currentSubmission');
+        console.log("Nomor referensi:", refNumber);
+        if (!refNumber) {
+          setError("Nomor referensi tidak ditemukan");
+          setLoading(false);
+          return;
+        }
+        
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/status/${refNumber}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          console.log(data.data);
+          setSubmission(data.data);
+        } else {
+          setError("Data pengajuan tidak ditemukan");
+        }
+      } catch (error) {
+        console.error("Error fetching tax status:", error);
+        setError("Terjadi kesalahan saat mengambil data");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubmissionData();
   }, []);
 
   const formatDate = (dateString: string) => {
@@ -83,6 +103,7 @@ export default function BuktiPengajuan() {
   };
 
   const handleBack = () => {
+    localStorage.removeItem('currentSubmission');
     router.push('/');
   };
   

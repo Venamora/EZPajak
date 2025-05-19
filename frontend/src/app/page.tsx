@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+require('dotenv').config();
 
 type TaxFormData = {
   nama: string;
@@ -149,33 +150,52 @@ export default function TaxSubmissionForm() {
     setError(generalError);
     return isValid;
   };
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
-    const jumlahPajakValue = parseFloat(formData.jumlahPajak);
-    const currentDate = new Date();
-    const refNumber = `TAX${currentDate.getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
-    
-    const taxSubmission = {
-      ...formData,
-      referensi: refNumber,
-      tanggalPengajuan: currentDate.toISOString(),
-      jumlahPajak: jumlahPajakValue,
-      status: "Menunggu Pembayaran"
-    };
-    
-    const existingSubmissions = JSON.parse(localStorage.getItem('taxSubmissions') || '[]');
-    localStorage.setItem('taxSubmissions', JSON.stringify([...existingSubmissions, taxSubmission]));
-    
-    localStorage.setItem('currentSubmission', refNumber);
-    
-    router.push('/bukti-pengajuan');
+  if (!validateForm()) {
+    return;
+  }
+
+  const jumlahPajakValue = parseFloat(formData.jumlahPajak);
+  const currentDate = new Date();
+  const refNumber = `TAX${currentDate.getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}`;
+
+  const taxSubmission = {
+    ...formData,
+    referensi: refNumber,
+    tanggalPengajuan: currentDate.toISOString(),
+    jumlahPajak: jumlahPajakValue,
+    status: "Menunggu Pembayaran"
   };
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/submit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(taxSubmission),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Gagal mengirim data.");
+    }
+
+    const result = await response.json();
+    const refNumber = result.data.referensi;
+
+    // Simpan hanya referensi untuk redirect
+    localStorage.setItem('currentSubmission', refNumber);
+
+    // Redirect ke halaman bukti pengajuan
+    router.push('/bukti-pengajuan');
+  } catch (err: any) {
+    setError(err.message || "Terjadi kesalahan saat mengirim data.");
+  }
+};
+
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">

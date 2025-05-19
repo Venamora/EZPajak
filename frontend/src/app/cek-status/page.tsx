@@ -59,30 +59,34 @@ export default function CekStatus() {
     }).format(amount);
   };
 
-  const handleSearch = () => {
-    if (!referenceNumber.trim()) {
-      setError("Nomor referensi wajib diisi");
-      return;
+const handleSearch = async () => {
+  if (!referenceNumber.trim()) {
+    setError("Nomor referensi wajib diisi");
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+  setIsSearched(true);
+  setSubmission(null);
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/status/${referenceNumber.trim()}`);
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      setSubmission(data.data);
+    } else {
+      setError("Data tidak ditemukan untuk nomor referensi tersebut");
     }
-    
-    setLoading(true);
-    setError("");
-    setIsSearched(true);
-    
-    setTimeout(() => {
-      const submissions = JSON.parse(localStorage.getItem('taxSubmissions') || '[]');
-      const found = submissions.find((s: TaxSubmission) => s.referensi === referenceNumber.trim());
-      
-      if (found) {
-        setSubmission(found);
-      } else {
-        setSubmission(null);
-        setError("Data tidak ditemukan untuk nomor referensi tersebut");
-      }
-      
-      setLoading(false);
-    }, 800);
-  };
+  } catch (err) {
+    console.error("Fetch error:", err);
+    setError("Terjadi kesalahan saat mengambil data dari server");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -214,20 +218,31 @@ export default function CekStatus() {
     }, 500);
   };
 
-  const handleConfirmPayment = () => {
+  const handleConfirmPayment = async () => {
     if (!submission) return;
-    
-    const submissions = JSON.parse(localStorage.getItem('taxSubmissions') || '[]');
-    const updatedSubmissions = submissions.map((s: TaxSubmission) => {
-      if (s.referensi === submission.referensi) {
-        return { ...s, status: "Lunas" };
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/status/${submission.referensi}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: "Lunas" }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmission(data.data); // update UI
+      } else {
+        alert("Gagal memperbarui status");
       }
-      return s;
-    });
-    
-    localStorage.setItem('taxSubmissions', JSON.stringify(updatedSubmissions));
-    setSubmission({ ...submission, status: "Lunas" });
+    } catch (error) {
+      console.error("Error confirming payment:", error);
+      alert("Terjadi kesalahan saat memperbarui status");
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -431,7 +446,12 @@ export default function CekStatus() {
             
             <div className="flex justify-between mt-6">
               <button
-                onClick={() => router.push('/')}
+                
+                onClick={() => {
+                  localStorage.removeItem('currentSubmission');
+                  localStorage.removeItem('taxSubmissions'); // opsional, kalau kamu pakai
+                  router.push('/');
+}}
                 className="px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Kembali ke Beranda
