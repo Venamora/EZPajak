@@ -94,6 +94,6 @@
 
 * Responsif, skema warna:
   * Header: Biru `#0057FF`
-  * Badge status: Kuning (pending), Hijau (lunas), Abu (gagal)
+  * Badge status: Kuning (pending), Hijau (lunas)
 * Gunakan ikon status (✔️, ⏳, ✖️)
 * Layout terpusat dan rapi
