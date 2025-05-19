@@ -249,12 +249,6 @@ export default function BuktiPengajuan() {
               </button>
               <div className="flex gap-3">
                 <button
-                  onClick={handleDownload}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  Unduh Bukti Pengajuan
-                </button>
-                <button
                   onClick={() => router.push('/cek-status')}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
