@@ -71,7 +71,7 @@ const handleSearch = async () => {
   setSubmission(null);
 
   try {
-    const response = await fetch(`http://localhost:3002/api/tax/status/${referenceNumber.trim()}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/status/${referenceNumber.trim()}`);
     const data = await response.json();
 
     if (response.ok && data.success) {
@@ -222,7 +222,7 @@ const handleSearch = async () => {
     if (!submission) return;
 
     try {
-      const response = await fetch(`http://localhost:3002/api/tax/status/${submission.referensi}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/status/${submission.referensi}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

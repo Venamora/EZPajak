@@ -1,10 +1,10 @@
 const { Sequelize } = require('sequelize');
 require('dotenv').config(); // <-- ini yang kamu lupa
 
-const sequelize = new Sequelize('defaultdb', 'avnadmin', process.env.DB_PASSWORD, {
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_ADMIN, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  dialect: 'postgres',
+  dialect: process.env.DB_DIALECT,
   dialectOptions: {
     ssl: {
       require: true,

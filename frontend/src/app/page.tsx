@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+require('dotenv').config();
 
 type TaxFormData = {
   nama: string;
@@ -169,7 +170,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   };
 
   try {
-    const response = await fetch("http://localhost:3002/api/tax/submit", {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

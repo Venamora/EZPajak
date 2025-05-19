@@ -34,7 +34,7 @@ export default function BuktiPengajuan() {
           return;
         }
         
-        const response = await fetch(`http://localhost:3002/api/tax/status/${refNumber}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL}/status/${refNumber}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

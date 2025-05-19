@@ -8,7 +8,7 @@ const sequelize = require('./config/database');
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:3003', // Replace with your frontend URL
+  origin: process.env.FRONTEND_URL, // Replace with your frontend URL
 }));
 app.use(bodyParser.json());
 
