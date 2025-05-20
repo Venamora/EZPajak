@@ -37,5 +37,3 @@ GET /api/tax/status/TAX2025-646
 ```
 ### contoh
 PUT /api/tax/status/TAX2025-646
-
-
