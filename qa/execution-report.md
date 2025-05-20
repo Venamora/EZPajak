@@ -1,14 +1,19 @@
-## ✅ Formulir Pengajuan Pajak — Execution Result
+# ✅ Formulir Pengajuan Pajak — Execution Result
 
-| ID    | Test Case                                 | Input Data               | Expected Result                                         | Actual Result | Status  | Screenshot                  |
-|-------|--------------------------------------------|--------------------------|----------------------------------------------------------|---------------|---------|-----------------------------|
-| TC01  | Nama tidak diisi                           | `""`                     | Error: "Nama tidak boleh kosong"                         | []       | [✓]   | screenshots/TC01.png        |
-| TC09  | NIK kurang dari 16 digit                   | `"123456789012345"`      | Error: "NIK harus 16 digit"                              | []       | [✓]   | screenshots/TC09.png        |
-| TC13  | NIK valid                                  | `"1234567890123456"`     | Form valid, lanjut ke langkah berikutnya                 | []       | [✓]   | screenshots/TC13.png        |
-| TC17  | Email format tidak valid                   | `"della@email.com"`      | Format email tidak valid                          | []       | [✓]   | screenshots/TC17.png        |
-| TC22  | Nomor telepon valid                        | `"081234564"`         | Nomor telepon harus terdiri dari 10-14 angka             | []       | [✓]   | screenshots/TC22.png        |
-| TC24  | Jenis pajak tidak dipilih                  | `""`                     | Error: "Jenis pajak harus dipilih"                       | []       | [✓]   | screenshots/TC24.png        |
-| TC28  | Jumlah pajak valid                         | `"1500000"`              | Diterima, lanjut ke proses penghitungan                  | []       | [✓]   | screenshots/TC28.png        |
-| TC30  | Unduh bukti pengajuan berhasil            | Klik tombol unduh       | File bukti berhasil diunduh tanpa error                  | []       | [✓]   | screenshots/TC30.png        |
-| TC51  | Cek status dengan referensi valid          | `"EZPJK-20240519-001"`   | Status ditampilkan dengan detail pengajuan               | []       | [✓]   | screenshots/TC51.png        |
-| TC52  | Cek status dengan referensi kosong         | `""`                     | Error: "Nomor referensi tidak boleh kosong"              | []       | [✓]   | screenshots/TC52.png        |
+## End-to-End Test
+
+| No | Halaman    | Aksi                                                                 | Expected Value                                                                 | Hasil |
+|----|------------|----------------------------------------------------------------------|----------------------------------------------------------------------------------|--------|
+| 1  | Dashboard  | Isi semua data wajib pajak dengan input valid                        | Tidak muncul error, tombol "Ajukan Pembayaran" aktif                           | Pass  |
+| 2  | Dashboard  | Isi NIK kurang dari 16 digit                                          | Muncul error "NIK harus terdiri dari 16 angka", tombol tidak aktif             | Pass  |
+| 3  | Dashboard  | Isi nomor HP kurang dari 14 digit                                     | Muncul error "Nomor telepon harus terdiri dari 10-14 angka"                    | Pass  |
+| 4  | Dashboard  | Isi email tidak valid (tidak memakai `@` atau domain)                | Muncul error "Format email tidak valid"                                        | Pass  |
+| 5  | Dashboard  | Isi jumlah pajak di bawah Rp 5.000                                    | Jumlah pajak minimal Rp 5.000                                                  | Pass  |
+| 6  | Dashboard  | Klik "Ajukan Pembayaran" setelah semua input valid                   | Redirect ke halaman `/bukti`, data tampil lengkap                              | Pass  |
+| 7  | Bukti      | Cek data referensi & informasi pajak                                 | Nomor Referensi TAX2025-XXX, info lengkap, instruksi transfer muncul          | Pass  |
+| 8  | Bukti      | Klik "Unduh Bukti Pengajuan"                                          | File berhasil terunduh                                                         | Pass  |
+| 9  | Cek Status | Input nomor referensi valid dan klik "Cari"                           | Data lengkap muncul, status: "Menunggu Pembayaran"                             | Pass  |
+| 10 | Cek Status | Input nomor referensi tidak valid                                     | Muncul pesan Nomor referensi tidak ditemukan                                   | Pass  |
+| 11 | Cek Status | Input nomor referensi kosong                                          | Nomor referensi wajib diisi                                                    | Pass  |
+| 12 | Cek Status | Klik "Konfirmasi Pembayaran"                                          | Status berubah jadi "Lunas", notifikasi sukses muncul                          | Pass  |
+| 13 | Cek Status | Klik "Unduh Bukti Pembayaran"                                         | File bukti berhasil diunduh                                                    | Pass  |
