@@ -16,41 +16,37 @@
 
 ## 🚀 Fitur Utama
 
-EZPajak adalah sistem web untuk pengajuan dan konfirmasi pembayaran pajak secara online. Sistem ini menyediakan berbagai fitur penting untuk memudahkan pengguna dalam proses administrasi pajak.
+EZPajak merupakan sistem web yang menyediakan layanan pengajuan dan konfirmasi pembayaran pajak secara online. Fitur-fitur utama meliputi:
 
-### 🧾 Formulir Pengajuan Pajak (F01)
-- Form input untuk nama, NIK, alamat, email, nomor HP, jenis pajak, dan jumlah pajak.
+- **Formulir Pengajuan Pajak**  
+  Pengguna dapat mengisi nama, NIK, alamat, email, nomor HP, jenis dan jumlah pajak.
 
-### ✔️ Validasi Form (F02)
-- Validasi otomatis untuk memastikan semua field diisi sesuai aturan (panjang karakter, format email, dll).
+- **Validasi Form Otomatis**  
+  Validasi dilakukan untuk memastikan semua field diisi sesuai aturan (format email, panjang karakter, dll).
 
-### 📂 Dropdown Jenis Pajak (F03)
-- Dropdown dengan pilihan jenis pajak seperti:
-  - PPh 21, PPh 22, PPh 23
-  - PPN, PBB, PKB
+- **Dropdown Jenis Pajak**  
+  Menyediakan pilihan jenis pajak: PPh 21, PPh 22, PPh 23, PPN, PBB, PKB.
 
-### 🔢 Nomor Referensi Otomatis (F04)
-- Sistem akan secara otomatis membuat nomor referensi unik (contoh: `TAX2025-001`) setelah form berhasil disubmit.
+- **Nomor Referensi Otomatis**  
+  Sistem secara otomatis menghasilkan nomor referensi (misal: TAX2025-001) setelah pengajuan berhasil.
 
-### 📄 Halaman Bukti Pengajuan (F05)
-- Menampilkan detail pengajuan: data wajib pajak, jumlah pajak, instruksi pembayaran, dan status pembayaran.
+- **Halaman Bukti Pengajuan**  
+  Menampilkan detail wajib pajak, rincian pengajuan, dan instruksi pembayaran.
 
-### 🔍 Cek Status Pembayaran (F06)
-- Fitur untuk mengecek status dan riwayat pengajuan berdasarkan nomor referensi.
+- **Cek Status Pembayaran**  
+  Pengguna dapat memasukkan nomor referensi untuk melihat status dan riwayat pembayaran.
 
-### ✅ Konfirmasi Pembayaran (F07)
-- Tombol aksi yang digunakan untuk menyatakan bahwa pembayaran telah dilakukan.
-- Sistem akan mengubah status menjadi `Lunas`.
+- **Konfirmasi Pembayaran**  
+  Tombol untuk menandai bahwa pembayaran telah dilakukan. Status akan diperbarui menjadi "Lunas".
 
-### 🎉 Notifikasi Sukses (F08)
-- Menampilkan pesan sukses dan status “Lunas” jika proses pembayaran berhasil.
+- **Notifikasi Sukses**  
+  Sistem menampilkan pesan dan status "Lunas" jika pembayaran berhasil dikonfirmasi.
 
-### 📥 Unduh Bukti (F09)
-- Tombol untuk mengunduh bukti pengajuan atau pembayaran dalam bentuk file PDF.
+- **Unduh Bukti**  
+  Pengguna dapat mengunduh bukti pengajuan atau pembayaran dalam format PDF.
 
-### 📱 Desain Responsif & Aksesibel (F10)
-- Tampilan web bersifat clean, konsisten, mudah dibaca, dan mendukung tampilan mobile.
-- Dioptimalkan untuk aksesibilitas semua pengguna.
+- **Desain Responsif dan Aksesibel**  
+  Tampilan web bersih, konsisten, mudah dibaca, dan dapat diakses melalui perangkat mobile.
 
 ---
 
