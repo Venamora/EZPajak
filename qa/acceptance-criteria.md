@@ -1,24 +1,18 @@
-# Acceptance Criteria – Aplikasi Pengajuan Pajak
+## 3. ✅ Acceptance Criteria
 
-## 1. Formulir Pajak
-- Dropdown jenis pajak tersedia minimal 2 jenis pajak.
-- Ada input untuk jumlah pajak (hanya angka positif).
-
-## 2. Validasi
-- Jumlah pajak kosong → tampilkan: "Jumlah pajak harus angka positif".
-- Jumlah pajak < 1 → tampilkan: "Jumlah pajak harus angka positif".
-
-## 3. Proses Pengajuan
-- Setelah klik "Ajukan Pembayaran", data dikirim ke backend.
-- Sistem menampilkan bukti pengajuan:
-  - Nomor referensi (format: TAX2025-XXX)
-  - Jenis pajak
-  - Jumlah pajak
-  - Tanggal pengajuan
-- Pengguna dapat **mengunduh bukti pengajuan** sebagai file PDF atau dokumen digital.
-
-## 4. Cek Status
-- Pengguna bisa input nomor referensi untuk melihat ulang datanya.
-
-## 5. Fitur Tambahan
-- Tombol “Kembali” mengarahkan pengguna ke formulir lagi.
+| ID    | Fitur Terkait            | Kriteria Penerimaan                                                                 |
+|-------|--------------------------|-------------------------------------------------------------------------------------|
+| AC01  | F01 – Formulir           | Nama, Alamat, Email tidak boleh kosong.                                            |
+| AC02  | F01 – Formulir           | NIK harus 16 digit angka.                                                          |
+| AC03  | F01 – Formulir           | Nomor Telepon: hanya angka, 10–14 digit.                                           |
+| AC04  | F01 – Formulir           | Email: valid format (contoh: `user@email.com`).                                    |
+| AC05  | F03 – Jenis Pajak        | Jenis pajak harus dipilih dari dropdown yang tersedia.                             |
+| AC06  | F01 – Jumlah Pajak       | Jumlah pajak minimal Rp 5.000 dan hanya angka positif.                             |
+| AC07  | F02 – Validasi Form      | Semua input harus valid sebelum tombol submit aktif.                               |
+| AC08  | F05 – Bukti Pengajuan    | Setelah submit, tampil data pengajuan + instruksi pembayaran + nomor referensi.    |
+| AC09  | F05 – Bukti Pengajuan    | Tombol Unduh Bukti dan Kembali ke Home harus muncul.                               |
+| AC10  | F06 – Cek Status         | Input referensi yang valid harus menampilkan data dan status lengkap.              |
+| AC11  | F06 – Cek Status         | Jika referensi tidak ditemukan, tampilkan pesan error.                             |
+| AC12  | F08 – Notifikasi         | Jika status Lunas, tampilkan notifikasi sukses + tanggal pembayaran.               |
+| AC13  | F10 – Responsif UI       | Layout tetap rapi di layar mobile, tablet, dan desktop.                            |
+| AC14  | F10 – UX Visual          | Warna badge: kuning (pending), hijau (lunas); ikon status (✔️, ⏳, ✖️).            |
