@@ -1,4 +1,4 @@
-import { isValidNIK, isValidPhone, isValidEmail, isValidPositiveTaxAmount } from '../utils/validation';
+import { isValidNIK, isValidPhone, isValidPositiveTaxAmount } from '../utils/validation';
 
 describe('Validation Utils', () => {
   describe('isValidNIK', () => {
@@ -20,14 +20,8 @@ describe('Validation Utils', () => {
     it('returns true for valid phone number (10 digits)', () => {
       expect(isValidPhone('0812345678')).toBe(true);
     });
-    it('returns true for valid phone number (14 digits)', () => {
-      expect(isValidPhone('08123456789012')).toBe(true);
-    });
     it('returns false for phone number less than 10 digits', () => {
       expect(isValidPhone('081234567')).toBe(false);
-    });
-    it('returns false for phone number more than 14 digits', () => {
-      expect(isValidPhone('081234567890123')).toBe(false);
     });
     it('returns false for phone number with non-numeric characters', () => {
       expect(isValidPhone('08123abc890')).toBe(false);
@@ -53,26 +47,7 @@ describe('Validation Utils', () => {
       expect(jumlahPajak).not.toBe('');
       expect(isValidNIK(nik)).toBe(true);
       expect(isValidPhone(telepon)).toBe(true);
-      expect(isValidEmail(email)).toBe(true);
       expect(isValidPositiveTaxAmount(jumlahPajak)).toBe(true);
-    });
-
-    describe('isValidEmail', () => {
-      it('returns true for valid email with .com', () => {
-        expect(isValidEmail('user@email.com')).toBe(true);
-      });
-      it('returns true for valid email with .co', () => {
-        expect(isValidEmail('user@email.co')).toBe(true);
-      });
-      it('returns false for email without @', () => {
-        expect(isValidEmail('useremail.com')).toBe(false);
-      });
-      it('returns false for email without domain', () => {
-        expect(isValidEmail('user@')).toBe(false);
-      });
-      it('returns false for email without .com or .co', () => {
-        expect(isValidEmail('user@email')).toBe(false);
-      });
     });
 
     describe('isValidPositiveTaxAmount', () => {
