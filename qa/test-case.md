@@ -56,10 +56,3 @@
 | TC55  | Paste teks panjang/salah  | Exploratory   | Paste teks acak ke input nomor referensi                        | "abcdefg123" → klik Cari       | Muncul pesan error: "Data tidak ditemukan untuk nomor referensi tersebut"      |
 | TC56  | Klik tombol "Konfirmasi Pembayaran"  | Klik tombol biru bertuliskan "Konfirmasi Pembayaran"                        | Dialihkan ke halaman konfirmasi pembayaran atau menampilkan form konfirmasi     |
 | TC57  | Unduh bukti pembayaran (PDF)            | Klik tombol biru "Unduh PDF"                                                | File bukti pembayaran (PDF) berhasil diunduh                                     |
----
-
-<!-- ### 📝 Catatan QA / Future Enhancement
-- Tidak tersedia tombol untuk **edit data** (misal: Nama, NPWP, Email).
-- Tidak ada **popup konfirmasi** saat klik "Kembali" — berpotensi meninggalkan halaman tanpa sadar.
-- Tombol “Unduh Bukti” tidak memberikan **feedback jika download gagal**.
-- Data instruksi pembayaran bersifat statis, tidak ada **copy-to-clipboard**. -->

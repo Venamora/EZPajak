@@ -1,4 +1,14 @@
-| TC ID | Status  | Actual Output                    | Evidence Screenshot        | Notes                  |
-|-------|---------|----------------------------------|----------------------------|-------------------------|
-| TC01  | Failed  | Tidak ada error muncul           | ![ss](ss/TC01.png)         | Bug: validasi gak muncul|
-| TC02  | Passed  | Error “Nama harus berupa huruf”  | ![ss](ss/TC02.png)         | -                       |
+## ✅ Formulir Pengajuan Pajak — Execution Result
+
+| ID    | Test Case                                 | Input Data               | Expected Result                                         | Actual Result | Status  | Screenshot                  |
+|-------|--------------------------------------------|--------------------------|----------------------------------------------------------|---------------|---------|-----------------------------|
+| TC01  | Nama tidak diisi                           | `""`                     | Error: "Nama tidak boleh kosong"                         | [Hasil]       | [✓/✗]   | screenshots/TC01.png        |
+| TC09  | NIK kurang dari 16 digit                   | `"123456789012345"`      | Error: "NIK harus 16 digit"                              | [Hasil]       | [✓/✗]   | screenshots/TC09.png        |
+| TC13  | NIK valid                                  | `"1234567890123456"`     | Form valid, lanjut ke langkah berikutnya                 | [Hasil]       | [✓/✗]   | screenshots/TC13.png        |
+| TC17  | Email format tidak valid                   | `"della@email.com"`      | Format email tidak valid                          | [Hasil]       | [✓/✗]   | screenshots/TC17.png        |
+| TC22  | Nomor telepon valid                        | `"081234564"`         | Nomor telepon harus terdiri dari 10-14 angka             | [Hasil]       | [✓/✗]   | screenshots/TC22.png        |
+| TC24  | Jenis pajak tidak dipilih                  | `""`                     | Error: "Jenis pajak harus dipilih"                       | [Hasil]       | [✓/✗]   | screenshots/TC24.png        |
+| TC28  | Jumlah pajak valid                         | `"1500000"`              | Diterima, lanjut ke proses penghitungan                  | [Hasil]       | [✓/✗]   | screenshots/TC28.png        |
+| TC30  | Unduh bukti pengajuan berhasil            | Klik tombol unduh       | File bukti berhasil diunduh tanpa error                  | [Hasil]       | [✓/✗]   | screenshots/TC30.png        |
+| TC51  | Cek status dengan referensi valid          | `"EZPJK-20240519-001"`   | Status ditampilkan dengan detail pengajuan               | [Hasil]       | [✓/✗]   | screenshots/TC51.png        |
+| TC52  | Cek status dengan referensi kosong         | `""`                     | Error: "Nomor referensi tidak boleh kosong"              | [Hasil]       | [✓/✗]   | screenshots/TC52.png        |
