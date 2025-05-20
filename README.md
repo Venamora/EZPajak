@@ -16,14 +16,44 @@
 
 ## 🚀 Fitur Utama
 
-- Formulir online pengajuan pajak  
-- Pengajuan pembayaran untuk dua jenis pajak:
-  - Pajak Penghasilan (PPh)
-  - Pajak Kendaraan Bermotor (PKB)
-- Bukti pengajuan dengan nomor referensi unik (contoh: `TAX2025-001`)
-- Tanggal dan detail pengajuan ditampilkan setelah proses berhasil
+EZPajak adalah sistem web untuk pengajuan dan konfirmasi pembayaran pajak secara online. Sistem ini menyediakan berbagai fitur penting untuk memudahkan pengguna dalam proses administrasi pajak.
+
+### 🧾 Formulir Pengajuan Pajak (F01)
+- Form input untuk nama, NIK, alamat, email, nomor HP, jenis pajak, dan jumlah pajak.
+
+### ✔️ Validasi Form (F02)
+- Validasi otomatis untuk memastikan semua field diisi sesuai aturan (panjang karakter, format email, dll).
+
+### 📂 Dropdown Jenis Pajak (F03)
+- Dropdown dengan pilihan jenis pajak seperti:
+  - PPh 21, PPh 22, PPh 23
+  - PPN, PBB, PKB
+
+### 🔢 Nomor Referensi Otomatis (F04)
+- Sistem akan secara otomatis membuat nomor referensi unik (contoh: `TAX2025-001`) setelah form berhasil disubmit.
+
+### 📄 Halaman Bukti Pengajuan (F05)
+- Menampilkan detail pengajuan: data wajib pajak, jumlah pajak, instruksi pembayaran, dan status pembayaran.
+
+### 🔍 Cek Status Pembayaran (F06)
+- Fitur untuk mengecek status dan riwayat pengajuan berdasarkan nomor referensi.
+
+### ✅ Konfirmasi Pembayaran (F07)
+- Tombol aksi yang digunakan untuk menyatakan bahwa pembayaran telah dilakukan.
+- Sistem akan mengubah status menjadi `Lunas`.
+
+### 🎉 Notifikasi Sukses (F08)
+- Menampilkan pesan sukses dan status “Lunas” jika proses pembayaran berhasil.
+
+### 📥 Unduh Bukti (F09)
+- Tombol untuk mengunduh bukti pengajuan atau pembayaran dalam bentuk file PDF.
+
+### 📱 Desain Responsif & Aksesibel (F10)
+- Tampilan web bersifat clean, konsisten, mudah dibaca, dan mendukung tampilan mobile.
+- Dioptimalkan untuk aksesibilitas semua pengguna.
 
 ---
+
 
 ## ✅ Acceptance Criteria dan QA
 
